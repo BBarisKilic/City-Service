@@ -1,6 +1,5 @@
 package com.bbkdevelopment.cityservice.controller;
 
-import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
 
@@ -16,26 +15,20 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
 import com.bbkdevelopment.cityservice.model.City;
+import com.bbkdevelopment.cityservice.service.CityService;
+
+import lombok.AllArgsConstructor;
 
 @RestController
 @RequestMapping("/cities")
+@AllArgsConstructor
 public class CityController {
 
-    private static final List<City> cities = new ArrayList<>();
-
-    public CityController() {
-        if (cities.isEmpty()) {
-            City city1 = new City("07", "Antalya", new Date());
-            City city2 = new City("34", "Istanbul", new Date());
-
-            cities.add(city1);
-            cities.add(city2);
-        }
-    }
+    private final CityService cityService;
 
     @GetMapping
     public ResponseEntity<List<City>> getCities() {
-        return new ResponseEntity<>(cities, HttpStatus.OK);
+        return new ResponseEntity<>(cityService.getCities(), HttpStatus.OK);
     }
 
     @GetMapping("/{id}")
@@ -45,10 +38,7 @@ public class CityController {
 
     @PostMapping
     public ResponseEntity<City> createCity(@RequestBody City city) {
-        city.setCreationDate(new Date());
-        cities.add(city);
-
-        return new ResponseEntity<>(city, HttpStatus.CREATED);
+        return new ResponseEntity<>(cityService.createCity(city), HttpStatus.CREATED);
     }
 
     @PutMapping("/{id}")
@@ -62,15 +52,11 @@ public class CityController {
 
     @DeleteMapping("/{id}")
     public ResponseEntity<Void> deleteCity(@PathVariable String id) {
-        cities.remove(getCityById(id));
-
+        cityService.deleteCity(id);
         return new ResponseEntity<>(HttpStatus.OK);
     }
 
     private City getCityById(String id) {
-        return cities.stream()
-                .filter(city -> city.getId().equals(id))
-                .findFirst()
-                .orElseThrow(() -> new RuntimeException("City not found!"));
+        return cityService.getCityById(id);
     }
 }
