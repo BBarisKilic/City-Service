@@ -1,6 +1,5 @@
 package com.bbkdevelopment.cityservice.controller;
 
-import java.util.Date;
 import java.util.List;
 
 import org.springframework.http.HttpStatus;
@@ -12,6 +11,7 @@ import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.PutMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 
 import com.bbkdevelopment.cityservice.model.City;
@@ -27,8 +27,8 @@ public class CityController {
     private final CityService cityService;
 
     @GetMapping
-    public ResponseEntity<List<City>> getCities() {
-        return new ResponseEntity<>(cityService.getCities(), HttpStatus.OK);
+    public ResponseEntity<List<City>> getCities(@RequestParam(required = false) String name) {
+        return new ResponseEntity<>(cityService.getCities(name), HttpStatus.OK);
     }
 
     @GetMapping("/{id}")

@@ -15,7 +15,12 @@ import lombok.AllArgsConstructor;
 public class CityService {
     private final CityRepository cityRepository;
 
-    public List<City> getCities() {
+    public List<City> getCities(String name) {
+        if (name != null) {
+            return cityRepository.findByName(name);
+
+        }
+
         return cityRepository.findAll();
     }
 
