@@ -5,6 +5,7 @@ import java.util.List;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.DeleteMapping;
+import org.springframework.web.bind.annotation.ExceptionHandler;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
@@ -14,6 +15,7 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 
+import com.bbkdevelopment.cityservice.exception.CityNotFoundException;
 import com.bbkdevelopment.cityservice.model.City;
 import com.bbkdevelopment.cityservice.service.CityService;
 
@@ -56,5 +58,10 @@ public class CityController {
 
     private City getCityById(String id) {
         return cityService.getCityById(id);
+    }
+
+    @ExceptionHandler(CityNotFoundException.class)
+    public ResponseEntity<String> handleCityNotFoundexception(CityNotFoundException exception) {
+        return new ResponseEntity<>(exception.getMessage(), HttpStatus.NOT_FOUND);
     }
 }

@@ -5,6 +5,7 @@ import java.util.List;
 
 import org.springframework.stereotype.Service;
 
+import com.bbkdevelopment.cityservice.exception.CityNotFoundException;
 import com.bbkdevelopment.cityservice.model.City;
 import com.bbkdevelopment.cityservice.repository.CityRepository;
 
@@ -42,6 +43,6 @@ public class CityService {
 
     public City getCityById(String id) {
         return cityRepository.findById(id)
-                .orElseThrow(() -> new RuntimeException("City not found!"));
+                .orElseThrow(() -> new CityNotFoundException("Could not find city with id: " + id));
     }
 }
