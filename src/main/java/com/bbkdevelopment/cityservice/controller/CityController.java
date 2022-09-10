@@ -15,6 +15,7 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 
+import com.bbkdevelopment.cityservice.exception.CityAlreadyExistsException;
 import com.bbkdevelopment.cityservice.exception.CityNotFoundException;
 import com.bbkdevelopment.cityservice.model.City;
 import com.bbkdevelopment.cityservice.service.CityService;
@@ -63,5 +64,10 @@ public class CityController {
     @ExceptionHandler(CityNotFoundException.class)
     public ResponseEntity<String> handleCityNotFoundexception(CityNotFoundException exception) {
         return new ResponseEntity<>(exception.getMessage(), HttpStatus.NOT_FOUND);
+    }
+
+    @ExceptionHandler(CityAlreadyExistsException.class)
+    public ResponseEntity<String> handleCityAlreadyExistsException(CityAlreadyExistsException exception) {
+        return new ResponseEntity<>(exception.getMessage(), HttpStatus.CONFLICT);
     }
 }
